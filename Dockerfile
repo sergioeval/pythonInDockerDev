@@ -9,6 +9,6 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY ./code ./code
 
-#CMD [ "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "80", "--reload" ]
+#CMD [ "uvicorn", "code.main:app", "--host", "0.0.0.0", "--port", "80", "--reload" ]
 
 #ENTRYPOINT [ "/bin/sh" ]
