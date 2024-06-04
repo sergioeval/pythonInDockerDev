@@ -1,4 +1,2 @@
-fastapi
-redis
-autopep8
-uvicorn
+pandas
+ipykernel
