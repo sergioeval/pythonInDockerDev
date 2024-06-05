@@ -1,14 +1,18 @@
-FROM python:3.12.2-alpine 
+# Use the official openjdk image as a base
+FROM openjdk:8
 
-WORKDIR /code
+# Set environment variables for Spark
+ENV SPARK_VERSION=3.3.1
+ENV HADOOP_VERSION=3
+ENV SPARK_HOME=/opt/spark
+ENV PATH=$PATH:$SPARK_HOME/bin
 
-COPY ./requirements.txt ./
-RUN apk add gcc musl-dev linux-headers
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+# Download and install Spark
+RUN curl -L "https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz" | tar -xz -C /opt/ \
+    && mv /opt/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} $SPARK_HOME
 
-COPY ./code ./code
+# Set the working directory
+WORKDIR $SPARK_HOME
 
-#CMD [ "uvicorn", "code.main:app", "--host", "0.0.0.0", "--port", "80", "--reload" ]
-
-#ENTRYPOINT [ "/bin/sh" ]
+# Start Spark shell
+CMD ["bin/spark-shell"]
